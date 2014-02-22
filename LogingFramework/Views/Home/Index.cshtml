@@ -1,0 +1,24 @@
+﻿
+@model LogingFramework.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "title";
+}
+
+<h2>title</h2>
+
+<div>
+    
+    <br>
+    @Model.Message
+    </br>
+        
+    @using (Html.BeginForm("MultiButtonForm", "Home", FormMethod.Post, new { id = "submitForm" }))
+    {
+              
+        <button type="submit" id="btnSave" name="Command" value="HELLO">Guten tag</button>
+        <button type="submit" id="btnSubmit" name="Command" value="BYE">auf Wiedersein</button>  
+    }
+       
+
+</div>
