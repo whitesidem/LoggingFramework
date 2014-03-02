@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using LoggingSystem;
 using LoggingSystem.Interfaces;
 using LoggingSystem.LogPublisher;
@@ -16,7 +15,12 @@ namespace LoggingSystemTests
     public class LoggingSystem_Tests : BaseLogPublisher
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private List<string> _loggedMessages = new List<string>();
+        private readonly List<string> _loggedMessages = new List<string>();
+        private readonly Guid TestGuid = Guid.Empty;
+        private Mock<ILogPublisherFactory> _logPublisherFactoryMock;
+        private LogSystem _loggingSystm;
+        private const string TestMessage1 = "Test Message1";
+        private const string TestDateTimeString = "2014-03-02T19:16:02.5050832+00:00";
 
         public LoggingSystem_Tests(): base(logger)
         {
@@ -32,8 +36,11 @@ namespace LoggingSystemTests
         [SetUp]
         public void SetUp()
         {
-            LogSystem.AmbientDate =  DateTime.Parse("2014-03-02T19:16:02.5050832+00:00"); 
-            _loggedMessages.Clear(); 
+            LogSystem.AmbientDate =  DateTime.Parse(TestDateTimeString); 
+            _loggedMessages.Clear();
+            _logPublisherFactoryMock = new Mock<ILogPublisherFactory>();
+            _logPublisherFactoryMock.Setup(m => m.CreatePublisher(It.IsAny<LoggingLevel>(), Logger)).Returns(this);
+            _loggingSystm = new LogSystem(TestGuid, _logPublisherFactoryMock.Object);
         }
 
         [TearDown]
@@ -71,32 +78,40 @@ namespace LoggingSystemTests
         }
 
         [Test]
-        public void Log_GivenMockPublisher_LogsMessageAsJson()
+        public void Log_GivenMockPublisherWithNoParams_LogsCorrectMessage()
         {
-            var logPublisherFactoryMock = new Mock<ILogPublisherFactory>();
-            logPublisherFactoryMock.Setup(m => m.CreatePublisher(It.IsAny<LoggingLevel>(), Logger)).Returns(this);
-
-
-            var TestGuid =  Guid.Empty;
-            var loggingSystm = new LogSystem(TestGuid, logPublisherFactoryMock.Object);
-
-            string testMessage1 = "Test Message1";
 
             //Act
-            loggingSystm.Log(Logger, LoggingLevel.Debug, testMessage1, null);
+            _loggingSystm.Log(Logger, LoggingLevel.Debug, TestMessage1, null);
 
 
             //Assert
-            Assert.That(_loggedMessages.Count,Is.EqualTo(1));
+            Assert.That(_loggedMessages.Count, Is.EqualTo(1), "Not expected number of logs");
             
-            Assert.That(_loggedMessages[0], Is.StringContaining(testMessage1));
+            Assert.That(_loggedMessages[0], Is.StringContaining(TestMessage1));
 
-            const string expectedMessage =
-                "{\"DateTime\":\"2014-03-02T19:16:02.5050832+00:00\",\"Method\":\"Log_GivenMockPublisher_LogsMessageAsJson\",\"UserId\":\"00000000-0000-0000-0000-000000000000\",\"Message\":\"Test Message1\"}";
+            string expectedMessage = String.Format("{{\"DateTime\":\"{0}\",\"Method\":\"{1}\",\"UserId\":\"00000000-0000-0000-0000-000000000000\",\"Message\":\"Test Message1\"}}", TestDateTimeString ,"Log_GivenMockPublisherWithNoParams_LogsCorrectMessage");
             Assert.That(_loggedMessages[0], Is.EqualTo(expectedMessage));
 
         }
 
+        [Test]
+        public void Log_GivenMockPublisherWithParams_LogsCorrectMessage()
+        {
+
+            //Act
+            _loggingSystm.Log(Logger, LoggingLevel.Debug, TestMessage1, new KeyValueCollection(new KeyValue("Age","9"), new KeyValue("Year","2014")));
+
+
+            //Assert
+            Assert.That(_loggedMessages.Count,Is.EqualTo(1),"Not expected number of logs");
+            
+            Assert.That(_loggedMessages[0], Is.StringContaining(TestMessage1));
+
+            string expectedMessage = String.Format("{{\"DateTime\":\"{0}\",\"Method\":\"{1}\",\"UserId\":\"00000000-0000-0000-0000-000000000000\",\"Message\":\"Test Message1\",\"Age\":\"9\",\"Year\":\"2014\"}}", TestDateTimeString, "Log_GivenMockPublisherWithParams_LogsCorrectMessage");
+            Assert.That(_loggedMessages[0], Is.EqualTo(expectedMessage));
+
+        }
 
 
 
