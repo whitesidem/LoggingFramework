@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using LoggingSystem;
 using LoggingSystem.Interfaces;
@@ -15,8 +16,7 @@ namespace LoggingSystemTests
     public class LoggingSystem_Tests : BaseLogPublisher
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private string _loggedMessage;
-        private DateTime ControlledDateTime = DateTime.Now;
+        private List<string> _loggedMessages = new List<string>();
 
         public LoggingSystem_Tests(): base(logger)
         {
@@ -33,7 +33,7 @@ namespace LoggingSystemTests
         public void SetUp()
         {
             LogSystem.AmbientDate =  DateTime.Parse("2014-03-02T19:16:02.5050832+00:00"); 
-            _loggedMessage = null;
+            _loggedMessages.Clear(); 
         }
 
         [TearDown]
@@ -85,14 +85,19 @@ namespace LoggingSystemTests
             //Act
             loggingSystm.Log(Logger, LoggingLevel.Debug, testMessage1, null);
 
+
             //Assert
-            Assert.That(_loggedMessage, Is.StringContaining(testMessage1));
+            Assert.That(_loggedMessages.Count,Is.EqualTo(1));
+            
+            Assert.That(_loggedMessages[0], Is.StringContaining(testMessage1));
 
             const string expectedMessage =
                 "{\"DateTime\":\"2014-03-02T19:16:02.5050832+00:00\",\"Method\":\"Log_GivenMockPublisher_LogsMessageAsJson\",\"UserId\":\"00000000-0000-0000-0000-000000000000\",\"Message\":\"Test Message1\"}";
-            Assert.That(_loggedMessage, Is.EqualTo(expectedMessage));
+            Assert.That(_loggedMessages[0], Is.EqualTo(expectedMessage));
 
         }
+
+
 
 
         public override bool IsLogLevelEnabled
@@ -102,7 +107,7 @@ namespace LoggingSystemTests
 
         public override void LogMessage(string message)
         {
-            _loggedMessage = message;
+            _loggedMessages.Add(message); 
         }
 
         public override void LogException(string message, Exception ex)
