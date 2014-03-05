@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogingFramework", "LogingFramework\LogingFramework.csproj", "{1898CE60-AD0F-44FE-B0B5-CB188DE7F65E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingSystem", "..\LoggingSystem\LoggingSystem.csproj", "{2C023754-7B94-4D4E-99BF-C9BC956B98AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingSystem", "LoggingSystem\LoggingSystem.csproj", "{2C023754-7B94-4D4E-99BF-C9BC956B98AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingSystemTests", "LoggingSystemTests\LoggingSystemTests.csproj", "{B8103830-D16C-4912-AF1E-DAA6AFC9A621}"
 EndProject
