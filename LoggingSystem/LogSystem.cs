@@ -20,20 +20,20 @@ namespace LoggingSystem
         }
 
 
-        public void Log(Logger logger, LoggingLevel level, string message, KeyValueCollection nameValueCollection, string sku = "Undefined", [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0, [CallerFilePath] string sourceFilePath = "")
+        public void Log(LoggingLevel level, string message, KeyValueCollection nameValueCollection, string sku = "Undefined", [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0, [CallerFilePath] string sourceFilePath = "")
         {
-            OutputLog(null, logger, level,message,nameValueCollection,sku,caller, sourceLineNumber, sourceFilePath);
+            OutputLog(null, level,message,nameValueCollection,sku,caller, sourceLineNumber, sourceFilePath);
         }
-        public void Log(Exception exception, Logger logger, LoggingLevel level, string message, KeyValueCollection nameValueCollection, string sku = "Undefined", [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0, [CallerFilePath] string sourceFilePath = "")
+        public void Log(Exception exception, LoggingLevel level, string message, KeyValueCollection nameValueCollection, string sku = "Undefined", [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0, [CallerFilePath] string sourceFilePath = "")
         {
-            OutputLog(exception, logger, level, message, nameValueCollection, sku, caller, sourceLineNumber, sourceFilePath);
+            OutputLog(exception, level, message, nameValueCollection, sku, caller, sourceLineNumber, sourceFilePath);
         }
 
-        private void OutputLog(Exception exception, Logger logger, LoggingLevel level, string message, KeyValueCollection nameValueCollection, string sku, string caller, int sourceLineNumber, string sourceFilePath)
+        private void OutputLog(Exception exception, LoggingLevel level, string message, KeyValueCollection nameValueCollection, string sku, string caller, int sourceLineNumber, string sourceFilePath)
         {
             try
             {
-                var logPublisher = _logPublisherFactory.CreatePublisher(level, logger);
+                var logPublisher = _logPublisherFactory.CreatePublisher(level);
                 if (logPublisher.IsLogLevelEnabled == false) return;
 
                 var formattedMessage = GenerateJsonFormattedMessage(caller, nameValueCollection, sku, message, exception, level.ToString(), sourceLineNumber, sourceFilePath);

@@ -5,23 +5,21 @@ namespace LoggingSystem.LogPublisher
 {
     class DebugLog : BaseLogPublisher
     {
-        public DebugLog(Logger logger) : base(logger)
-        {
-        }
+        readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public override bool IsLogLevelEnabled
         {
-            get { return Logger.IsDebugEnabled; }
+            get { return _logger.IsDebugEnabled; }
         }
 
         public override void LogMessage(string message)
         {
-            Logger.Debug(message);
+            _logger.Debug(message);
         }
 
         public override void LogException(string message, Exception ex)
         {
-            Logger.DebugException(message, ex);
+            _logger.DebugException(message, ex);
         }
     }
 }

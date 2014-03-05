@@ -5,23 +5,21 @@ namespace LoggingSystem.LogPublisher
 {
     class InfoLog : BaseLogPublisher
     {
-        public InfoLog(Logger logger) : base(logger)
-        {
-        }
+        readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public override bool IsLogLevelEnabled
         {
-            get { return Logger.IsInfoEnabled; }
+            get { return _logger.IsInfoEnabled; }
         }
 
         public override void LogMessage(string message)
         {
-            Logger.Info(message);
+            _logger.Info(message);
         }
 
         public override void LogException(string message, Exception ex)
         {
-            Logger.InfoException(message, ex);
+            _logger.InfoException(message, ex);
         }
     }
 }

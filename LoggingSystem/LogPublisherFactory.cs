@@ -8,24 +8,24 @@ namespace LoggingSystem
 {
     public  class LogPublisherFactory : ILogPublisherFactory
     {
-        public  BaseLogPublisher CreatePublisher(LoggingLevel level, Logger logger)
+        public  BaseLogPublisher CreatePublisher(LoggingLevel level)
         {
             switch (level)
             {
                 case LoggingLevel.Debug:
-                    return new DebugLog(logger);
+                    return new DebugLog();
                     break;
                 case LoggingLevel.Info:
-                    return new InfoLog(logger);
+                    return new InfoLog();
                     break;
                 case LoggingLevel.Warn:
-                    return new WarnLog(logger);
+                    return new WarnLog();
                     break;
                 case LoggingLevel.Error:
-                    return new ErrorLog(logger);
+                    return new ErrorLog();
                     break;
                 case LoggingLevel.Fatal:
-                    return new FatalLog(logger);
+                    return new FatalLog();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("level");

@@ -6,6 +6,6 @@ namespace LoggingSystem.Interfaces
 {
     public interface ILogPublisherFactory
     {
-        BaseLogPublisher CreatePublisher(LoggingLevel level, Logger logger);
+        BaseLogPublisher CreatePublisher(LoggingLevel level);
     }
 }

@@ -5,23 +5,21 @@ namespace LoggingSystem.LogPublisher
 {
     class FatalLog : BaseLogPublisher
     {
-        public FatalLog(Logger logger) : base(logger)
-        {
-        }
+        readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public override bool IsLogLevelEnabled
         {
-            get { return Logger.IsFatalEnabled; }
+            get { return _logger.IsFatalEnabled; }
         }
 
         public override void LogMessage(string message)
         {
-            Logger.Fatal(message);
+            _logger.Fatal(message);
         }
 
         public override void LogException(string message, Exception ex)
         {
-            Logger.FatalException(message, ex);
+            _logger.FatalException(message, ex);
         }
     }
 }

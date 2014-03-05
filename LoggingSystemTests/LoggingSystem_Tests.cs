@@ -14,7 +14,7 @@ namespace LoggingSystemTests
 // ReSharper disable InconsistentNaming
     public class LoggingSystem_Tests : BaseLogPublisher
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+//        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly List<string> _loggedMessages = new List<string>();
         private readonly List<string> _loggedExceptionMessages = new List<string>();
         private readonly Guid TestGuid = Guid.Empty;
@@ -24,14 +24,9 @@ namespace LoggingSystemTests
         private const string TestDateTimeString = "2014-03-02T19:16:02.5050832+00:00";
         private bool _isLogEnabled = true;
 
-        public LoggingSystem_Tests(): base(logger)
+        public LoggingSystem_Tests(): base()
         {
             
-        }
-
-
-        public LoggingSystem_Tests(Logger logger) : base(logger)
-        {
         }
 
 
@@ -43,7 +38,7 @@ namespace LoggingSystemTests
             _loggedMessages.Clear();
             _loggedExceptionMessages.Clear();
             _logPublisherFactoryMock = new Mock<ILogPublisherFactory>();
-            _logPublisherFactoryMock.Setup(m => m.CreatePublisher(It.IsAny<LoggingLevel>(), Logger)).Returns(this);
+            _logPublisherFactoryMock.Setup(m => m.CreatePublisher(It.IsAny<LoggingLevel>())).Returns(this);
             _loggingSystm = new LogSystem(TestGuid, _logPublisherFactoryMock.Object);
         }
 
@@ -54,24 +49,6 @@ namespace LoggingSystemTests
         }
 
 
-        [Test, Category("Implementation Test")]
-        public void NLog_DirectCall_Test()
-        {
-            //Check result in Sentinal.exe
-            logger.Trace("Another test 2");
-        }
-
-        [Test, Category("Integration Test")]
-        public void NLog_DirectCall_JsonTest()
-        {
-            var example =
-                @"{'timestamp': '2014-03-02T19:16:02.5050832+00:00','facility': 'clientSide','clientip': '123.123.123.123','domain': 'www.example.com','server': 'abc-123','request': '/page/request','pagename': 'funnel:example com:page1','searchKey': '1234567890_','sessionID': '11111111111111','event1': 'loading','event2': 'interstitial display banner','severity': 'WARN','short_message': '....meaning short message for aggregation...','full_message': 'full LOG message','userAgent': '...blah...blah..blah...','RT': 2}";
-            example = example.Replace("'", "\"");
-
-            //Check result in Sentinal.exe
-            logger.Trace(example);
-        }
-
         [Test, Category("Integration Test")]
         public void NLogJsonFormatTest()
         {
@@ -81,9 +58,9 @@ namespace LoggingSystemTests
             var loggingSystm = new LogSystem(TestGuid, new LogPublisherFactory());
 
             //Act
-            loggingSystm.Log(Logger, LoggingLevel.Info, TestMessage1, null);
-            loggingSystm.Log(Logger, LoggingLevel.Info, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Year", "2014")));
-            loggingSystm.Log(Logger, LoggingLevel.Info, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Answer", null), new KeyValue("Year", "2014")));
+            loggingSystm.Log(LoggingLevel.Info, TestMessage1, null);
+            loggingSystm.Log(LoggingLevel.Info, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Year", "2014")));
+            loggingSystm.Log(LoggingLevel.Info, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Answer", null), new KeyValue("Year", "2014")));
         }
 
         [Test, Category("Integration Test")]
@@ -97,9 +74,9 @@ namespace LoggingSystemTests
             Exception testException = CreateNestedException();
 
             //Act
-            loggingSystm.Log(testException, Logger, LoggingLevel.Error, TestMessage1, null);
-            loggingSystm.Log(testException, Logger, LoggingLevel.Error, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Year", "2014")));
-            loggingSystm.Log(testException, Logger, LoggingLevel.Error, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Answer", null), new KeyValue("Year", "2014")));
+            loggingSystm.Log(testException, LoggingLevel.Error, TestMessage1, null);
+            loggingSystm.Log(testException, LoggingLevel.Error, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Year", "2014")));
+            loggingSystm.Log(testException, LoggingLevel.Error, TestMessage1, new KeyValueCollection(new KeyValue("Age", "9"), new KeyValue("Answer", null), new KeyValue("Year", "2014")));
         }
 
 
@@ -109,7 +86,7 @@ namespace LoggingSystemTests
         {
 
             //Act
-            _loggingSystm.Log(Logger, LoggingLevel.Debug, TestMessage1, null);
+            _loggingSystm.Log(LoggingLevel.Debug, TestMessage1, null);
 
 
             //Assert
@@ -129,7 +106,7 @@ namespace LoggingSystemTests
         {
 
             //Act
-            _loggingSystm.Log(Logger, LoggingLevel.Debug, TestMessage1, new KeyValueCollection(new KeyValue("Age","9"), new KeyValue("Year","2014")));
+            _loggingSystm.Log(LoggingLevel.Debug, TestMessage1, new KeyValueCollection(new KeyValue("Age","9"), new KeyValue("Year","2014")));
 
 
             //Assert
@@ -149,7 +126,7 @@ namespace LoggingSystemTests
         {
 
             //Act
-            _loggingSystm.Log(new Exception("TestException"), Logger, LoggingLevel.Error, TestMessage1, null);
+            _loggingSystm.Log(new Exception("TestException"), LoggingLevel.Error, TestMessage1, null);
 
 
             //Assert
@@ -170,7 +147,7 @@ namespace LoggingSystemTests
         {
 
             //Act
-            _loggingSystm.Log(Logger, LoggingLevel.Debug, TestMessage1, new KeyValueCollection(new KeyValue("Age", null)));
+            _loggingSystm.Log(LoggingLevel.Debug, TestMessage1, new KeyValueCollection(new KeyValue("Age", null)));
 
 
             //Assert
@@ -192,7 +169,7 @@ namespace LoggingSystemTests
             _isLogEnabled = false;
 
             //Act
-            _loggingSystm.Log(Logger, LoggingLevel.Debug, TestMessage1, null);
+            _loggingSystm.Log(LoggingLevel.Debug, TestMessage1, null);
 
             //Assert
             Assert.That(_loggedMessages.Count,Is.EqualTo(0),"Not expected number of logs");

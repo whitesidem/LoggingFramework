@@ -5,23 +5,21 @@ namespace LoggingSystem.LogPublisher
 {
     class ErrorLog : BaseLogPublisher
     {
-        public ErrorLog(Logger logger) : base(logger)
-        {
-        }
+        readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public override bool IsLogLevelEnabled
         {
-            get { return Logger.IsErrorEnabled; }
+            get { return _logger.IsErrorEnabled; }
         }
 
         public override void LogMessage(string message)
         {
-            Logger.Error(message);
+            _logger.Error(message);
         }
 
         public override void LogException(string message, Exception ex)
         {
-            Logger.ErrorException(message, ex);
+            _logger.ErrorException(message, ex);
         }
     }
 }
