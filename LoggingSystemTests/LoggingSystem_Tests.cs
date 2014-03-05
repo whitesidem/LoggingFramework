@@ -5,7 +5,6 @@ using LoggingSystem.Interfaces;
 using LoggingSystem.LogPublisher;
 using LoggingSystem.Models;
 using Moq;
-using NLog;
 using NUnit.Framework;
 namespace LoggingSystemTests
 {
@@ -14,7 +13,6 @@ namespace LoggingSystemTests
 // ReSharper disable InconsistentNaming
     public class LoggingSystem_Tests : BaseLogPublisher
     {
-//        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly List<string> _loggedMessages = new List<string>();
         private readonly List<string> _loggedExceptionMessages = new List<string>();
         private readonly Guid TestGuid = Guid.Empty;
@@ -23,12 +21,6 @@ namespace LoggingSystemTests
         private const string TestMessage1 = "Test Message1";
         private const string TestDateTimeString = "2014-03-02T19:16:02.5050832+00:00";
         private bool _isLogEnabled = true;
-
-        public LoggingSystem_Tests(): base()
-        {
-            
-        }
-
 
         [SetUp]
         public void SetUp()
@@ -115,7 +107,7 @@ namespace LoggingSystemTests
             Assert.That(_loggedMessages[0], Is.StringContaining(TestMessage1));
 
             string expectedMessageContains1 = String.Format("{{\"LogType\":\"Debug\",\"DateTime\":\"{0}\",\"Method\":\"{1}\",\"LineNumber\":", TestDateTimeString, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            string expectedMessageContains2 = "\"UserId\":\"00000000-0000-0000-0000-000000000000\",\"Message\":\"Test Message1\",\"Age\":\"9\",\"Year\":\"2014\",\"FilePath\":";
+            const string expectedMessageContains2 = "\"UserId\":\"00000000-0000-0000-0000-000000000000\",\"Message\":\"Test Message1\",\"Age\":\"9\",\"Year\":\"2014\",\"FilePath\":";
             Assert.That(_loggedMessages[0], Is.StringContaining(expectedMessageContains1));
             Assert.That(_loggedMessages[0], Is.StringContaining(expectedMessageContains2));
 
