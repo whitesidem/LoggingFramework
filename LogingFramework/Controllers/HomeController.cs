@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LoggingSystem;
+using LoggingSystem.Models;
 using LogingFramework.Models;
 
 namespace LogingFramework.Controllers
@@ -12,6 +14,9 @@ namespace LogingFramework.Controllers
         //
         // GET: /Home/
 
+        LogSystem _loggingSystm = new LogSystem(new Guid(), new LogPublisherFactory());
+
+
         public ActionResult Index()
         {
             return View(new IndexViewModel{Message = "Unset Message"});
@@ -20,6 +25,7 @@ namespace LogingFramework.Controllers
         [HttpPost]
         public ActionResult MultiButtonForm(string command )
         {
+
             var model = new IndexViewModel();
 
             switch (command)
@@ -36,6 +42,7 @@ namespace LogingFramework.Controllers
                     }
             }
 
+            _loggingSystm.Log(LoggingLevel.Info, model.Message, null);
             return View("Index", model);
 
         }

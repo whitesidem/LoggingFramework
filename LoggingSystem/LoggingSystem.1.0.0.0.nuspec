@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>LoggingSystem</id>
+        <version>1.0.0.0</version>
+        <authors>Drl Limited</authors>
+        <owners>Drl Limited</owners>
+        <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+        <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+        <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Logging with schema</description>
+        <releaseNotes>Initial release</releaseNotes>
+        <copyright>Copyright 2014, DRL Limited</copyright>
+        <tags>Logging Schema</tags>
+        <dependencies>
+            <dependency id="NLog" version="2.1.0" />
+            <dependency id="Newtonsoft.Json" version="4.5.9" />
+        </dependencies>
+    </metadata>
+    <files>
+		<file src="bin\Release\LoggingSystem.dll" target="lib\LoggingSystem.dll" />
+		<file src="bin\Release\LoggingSystem.pdb" target="lib\LoggingSystem.pdb" />
+		<file src="NLog.xsd" target="NLog.xsd" />
+    </files>
+</package>
