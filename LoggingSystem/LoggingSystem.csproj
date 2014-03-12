@@ -59,7 +59,7 @@
     <Compile Include="LogPublisher\FatalLog.cs" />
     <Compile Include="LogPublisher\InfoLog.cs" />
     <Compile Include="LogPublisher\WarnLog.cs" />
-    <Compile Include="LogPublisher\LogSystem.cs" />
+    <Compile Include="LogSystem.cs" />
     <Compile Include="Models\KeyValue.cs" />
     <Compile Include="Models\KeyValueCollection.cs" />
     <Compile Include="Models\LoggingLevel.cs" />

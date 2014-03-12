@@ -4,7 +4,6 @@ using System.Dynamic;
 using System.Runtime.CompilerServices;
 using LoggingSystem.Interfaces;
 using LoggingSystem.Models;
-using NLog;
 
 namespace LoggingSystem
 {
